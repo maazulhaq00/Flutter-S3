@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:layout/screens/AlignmentScreen.dart';
 import 'package:layout/screens/HomeScreen.dart';
 import 'package:layout/screens/RowScreen.dart';
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: RowScreen(),
+      home: AlignmentScreen(),
     );
   }
 }

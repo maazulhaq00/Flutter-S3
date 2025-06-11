@@ -7,8 +7,8 @@ class AlignmentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Alignment Screen"),),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
@@ -30,7 +30,8 @@ class AlignmentScreen extends StatelessWidget {
             child: Text("Container 3"),
           ),
           Container(
-            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            // height: MediaQuery.of(context).size.height,
           )
         ],
       ),

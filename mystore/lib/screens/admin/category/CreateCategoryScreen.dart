@@ -19,6 +19,8 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
         "categoryName": catNameController.text,
       });
 
+      catNameController.clear();
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Category Added Successfully"),
@@ -52,6 +54,41 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
             ),
             SizedBox(height: 10),
             ElevatedButton(onPressed: addCategory, child: Text("Add")),
+            SizedBox(height: 10),
+
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: db.collection("category").snapshots(),
+                builder: (context, snapsot) {
+                  if (snapsot.hasError) {
+                    return Center(child: Text("Error: ${snapsot.error}"));
+                  }
+
+                  if (snapsot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+
+                  final categoryDocsList = snapsot.data!.docs;
+
+                  return ListView.builder(
+                    itemCount: categoryDocsList.length,
+                    itemBuilder: (context, index) {
+                      var categoryMap =
+                          categoryDocsList[index].data()
+                              as Map<String, dynamic>;
+
+                      return Card(
+                        child: ListTile(
+                          title: Text(
+                            categoryMap["categoryName"] ?? "No Cat Name",
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

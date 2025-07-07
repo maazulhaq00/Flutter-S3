@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mystore/Welcome.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mystore/screens/admin/category/CreateCategoryScreen.dart';
 import 'firebase_options.dart';
+import 'screens/admin/WelcomeScreen.dart';
 
 void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -15,6 +15,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: CreateCategoryScreen());
+    return MaterialApp(home: WelcomeScreen());
   }
 }

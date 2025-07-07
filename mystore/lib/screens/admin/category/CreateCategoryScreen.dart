@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mystore/screens/admin/category/EditCategoryScreen.dart';
+import 'package:mystore/screens/admin/product/CreateProductScreen.dart';
+import 'package:mystore/widgets/AdminDrawer.dart';
+import 'package:mystore/utlis/constants.dart';
 
-var db = FirebaseFirestore.instance;
 
 class CreateCategoryScreen extends StatefulWidget {
   const CreateCategoryScreen({super.key});
@@ -34,10 +37,38 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
     }
   }
 
+  void deleteCategory(String docId) async {
+    try {
+      await db.collection("category").doc(docId).delete();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Category Deleted Successfully"),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (err) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error Occureed"), backgroundColor: Colors.red),
+      );
+    }
+  }
+
+  void editCategory(category, docId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => EditCategoryScreen(category: category, docId: docId),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Center(child: Text("Create Category"))),
+      drawer: AdminDrawer(),
       backgroundColor: const Color.fromARGB(255, 178, 210, 236),
       body: Container(
         padding: EdgeInsets.all(20),
@@ -77,10 +108,26 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
                           categoryDocsList[index].data()
                               as Map<String, dynamic>;
 
+                      var docId = categoryDocsList[index].id;
+
                       return Card(
                         child: ListTile(
                           title: Text(
-                            categoryMap["categoryName"] ?? "No Cat Name",
+                            categoryMap["categoryName"] ?? "No Category Name",
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                onPressed:
+                                    () => editCategory(categoryMap, docId),
+                                icon: Icon(Icons.edit, color: Colors.green),
+                              ),
+                              IconButton(
+                                onPressed: () => deleteCategory(docId),
+                                icon: Icon(Icons.delete, color: Colors.red),
+                              ),
+                            ],
                           ),
                         ),
                       );
